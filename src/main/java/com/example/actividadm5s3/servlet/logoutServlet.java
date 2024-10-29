@@ -2,10 +2,7 @@ package com.example.actividadm5s3.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
@@ -14,11 +11,20 @@ public class logoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
+        Cookie[] cookies = req.getCookies();
 
-        if (session != null) {
-            session.invalidate();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("usuario")) {
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    resp.addCookie(cookie);
+                    break;
+                }
+            }
         }
-        resp.sendRedirect("index.jsp");
+
+
+        resp.sendRedirect("index.jsp?logout=success");
     }
 }

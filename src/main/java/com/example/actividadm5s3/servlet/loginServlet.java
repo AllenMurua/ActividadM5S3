@@ -3,10 +3,7 @@ package com.example.actividadm5s3.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
@@ -21,8 +18,10 @@ public class loginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         if ("admin".equals(usuario) && "admin".equals(password)) {
-            HttpSession session = req.getSession();
-            session.setAttribute("usuario", usuario);
+            Cookie usercookie = new Cookie("usuario", usuario);
+            usercookie.setMaxAge(30 * 60);
+            usercookie.setPath("/");
+            resp.addCookie(usercookie);
 
             resp.sendRedirect("bienvenida.jsp");
         }else {

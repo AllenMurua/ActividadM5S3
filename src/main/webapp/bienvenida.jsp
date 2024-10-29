@@ -6,6 +6,22 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<% String usuario = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null){
+        for (Cookie cookie : cookies){
+            if (cookie.getName().equals("usuario")){
+                usuario = cookie.getValue();
+                break;
+            }
+        }
+    }
+    if (usuario == null){
+        response.sendRedirect("/index.jsp");
+        return;
+    }
+%>
+
 <html>
 <head>
     <title>bienvenida</title>
@@ -15,7 +31,7 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" >Bienvenido <%= session.getAttribute("usuario")%></a>
+        <a class="navbar-brand" >Bienvenido <%= usuario%></a>
 
         <a class="navbar-brand" href="/logout">Cerrar Sesion</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
